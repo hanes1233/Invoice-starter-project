@@ -1,0 +1,13 @@
+.zoom:hover {
+    transition: transform 0.8s;
+    transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    background-color: rgb(34, 219, 89)!important;
+  }
+
+.clr:hover {
+    color: rgb(22, 17, 17) !important;
+}
+
+.table-color {
+    background-color: rgb(236, 236, 236);
+}

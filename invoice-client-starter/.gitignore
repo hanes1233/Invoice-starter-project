@@ -1,0 +1,6 @@
+*.png
+*.jpg
+*.ico
+*.yaml
+*.class
+/node_modules
