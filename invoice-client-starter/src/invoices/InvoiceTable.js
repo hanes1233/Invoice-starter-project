@@ -34,8 +34,8 @@ const InvoiceTable = ({ label, items, deleteInvoice }) => {
                             <td>{invoice.issued}</td>
                             <td>{invoice.dueDate}</td>
                             <td>{invoice.product}</td>
-                            <td>{invoice.price}</td>
-                            <td>{invoice.vat}</td>
+                            <td>{invoice.price},00 Kč</td>
+                            <td>{invoice.vat},00 Kč</td>
                             <td>{invoice.note}</td>
                             <td>{invoice.buyer.name}</td>
                             <td>{invoice.seller.name}</td>

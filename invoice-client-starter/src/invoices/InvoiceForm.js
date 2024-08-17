@@ -54,6 +54,12 @@ const InvoiceForm = () => {
             });
     };
 
+    const handleBuyer = () => {
+        if(!id) {
+            return persons[Math.random() * persons.length];
+        }
+    }
+
     const sent = sentState;
     const success = successState;
 

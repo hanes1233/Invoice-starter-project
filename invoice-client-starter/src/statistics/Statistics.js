@@ -41,7 +41,6 @@ export function Statistics() {
                         <table className="table table-bordered table-striped border table-color">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
                                     <th>Jméno</th>
                                     <th>Přijmy</th>
                                 </tr>
@@ -49,7 +48,6 @@ export function Statistics() {
                             <tbody>
                                     {persons.map((item) => (
                                         <tr>
-                                            <td>{item.personId}</td>
                                             <td>{item.personName}</td>
                                             <td>{item.revenue}</td>
                                         </tr>

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import FlashMessage from "../components/FlashMessage";
 
 import { apiGet } from "../utils/api";
 import Country from "./Country";
@@ -19,7 +20,7 @@ const PersonDetail = () => {
 
     while (person.identificationNumber == null) {
         return (
-            <h1>Načítání...</h1>
+            <FlashMessage theme="danger text-center" text="Osoba s zadáným id neexistuje."/>
         )
     }
 
