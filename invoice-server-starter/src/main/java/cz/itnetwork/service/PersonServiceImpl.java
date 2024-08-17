@@ -1,26 +1,24 @@
 package cz.itnetwork.service;
-
+//region imports
 import cz.itnetwork.dto.InvoiceDTO;
 import cz.itnetwork.dto.PersonDTO;
 import cz.itnetwork.dto.mapper.InvoiceMapper;
 import cz.itnetwork.dto.mapper.PersonMapper;
+import cz.itnetwork.dto.statisticsDTO.PersonStatistics;
 import cz.itnetwork.entity.PersonEntity;
 import cz.itnetwork.entity.repository.InvoiceRepository;
 import cz.itnetwork.entity.repository.PersonRepository;
-import cz.itnetwork.service.statistics.PersonStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
+//endregion
 
 @Service
 public class PersonServiceImpl implements PersonService {
-    // Dependency injections
+    // region Dependency injections
     @Autowired
     private PersonMapper personMapper;
 
@@ -138,48 +136,17 @@ public class PersonServiceImpl implements PersonService {
                 .orElseThrow(() -> new NotFoundException("Person with id " + id + " wasn't found in the database."));
     }
 
-    @Override
-    public PersonDTO findSeller(Long id) {
-        return personMapper.toDTO(personRepository
-                .findById(id)
-                .orElseThrow());
-    }
-    @Override
-    public PersonDTO findBuyer(Long id) {
-        return personMapper.toDTO(personRepository
-                .findById(id)
-                .orElseThrow());
-    }
-
     /**
      * Get person statistics
-     * @return person's statistics object
+     * @return person's statistics list
      */
     @Override
     public List<PersonStatistics> getStatistics() {
-        // Get sellers id's into list
-        List<Long> sellerIds = invoiceRepository.findSellerIds();
-
-        // Create Map with id(as key) and revenue(as value) using Query and SUM function
-        Map<Long, Long> sellerList = new HashMap<>();
-
-        for(Long id : sellerIds) {
-            sellerList.put(id, invoiceRepository.findRevenueById(id));
-        }
-
-        // Create list with statistic objects, appending names by id
-        List<PersonStatistics> personStatisticsList = new ArrayList<>();
-        for (var entry : sellerList.entrySet()) {
-            personStatisticsList.add(
-                    new PersonStatistics
-                            (entry.getKey(),
-                                    personRepository
-                                            .findById(entry.getKey())
-                                            .get()
-                                            .getName()
-                                    ,entry.getValue()));
-        }
-        return personStatisticsList;
+        return invoiceRepository.findSellerIds().stream().map(id ->
+                        new PersonStatistics(
+                                id,
+                                personRepository.findById(id).get().getName(),
+                                invoiceRepository.findRevenueById(id)))
+                .toList();
     }
-    // endregion
 }

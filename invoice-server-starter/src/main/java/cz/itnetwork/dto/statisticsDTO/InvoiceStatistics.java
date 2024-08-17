@@ -1,4 +1,4 @@
-package cz.itnetwork.service.statistics;
+package cz.itnetwork.dto.statisticsDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

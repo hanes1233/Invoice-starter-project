@@ -1,23 +1,27 @@
 package cz.itnetwork.controller;
 
+//region imports
 import cz.itnetwork.dto.InvoiceDTO;
 import cz.itnetwork.entity.filter.InvoiceFilter;
 import cz.itnetwork.service.InvoiceService;
 import cz.itnetwork.service.PersonService;
-import cz.itnetwork.service.statistics.InvoiceStatistics;
+import cz.itnetwork.dto.statisticsDTO.InvoiceStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+//endregion
 
 @RestController
 @RequestMapping("/api")
 public class InvoiceController {
+    //region Dependency injections
     @Autowired
     private InvoiceService invoiceService;
     @Autowired
     private PersonService personService;
+    //endregion
 
     @GetMapping({"/invoices","/invoices/"})
     public List<InvoiceDTO> getAllInvoices(InvoiceFilter invoiceFilter) {

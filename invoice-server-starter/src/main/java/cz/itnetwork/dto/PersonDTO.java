@@ -1,10 +1,12 @@
 package cz.itnetwork.dto;
 
+//region imports
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cz.itnetwork.constant.Countries;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+//endregion
 
 @Data
 @AllArgsConstructor

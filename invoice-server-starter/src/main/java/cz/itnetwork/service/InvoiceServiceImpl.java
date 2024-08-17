@@ -7,7 +7,7 @@ import cz.itnetwork.entity.InvoiceEntity;
 import cz.itnetwork.entity.filter.InvoiceFilter;
 import cz.itnetwork.entity.repository.InvoiceRepository;
 import cz.itnetwork.entity.repository.specification.InvoiceSpecification;
-import cz.itnetwork.service.statistics.InvoiceStatistics;
+import cz.itnetwork.dto.statisticsDTO.InvoiceStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 public class InvoiceServiceImpl implements InvoiceService{
 
-    // Dependency injections
+    // region Dependency injections
     @Autowired
     private InvoiceRepository invoiceRepository;
     @Autowired
@@ -36,11 +36,10 @@ public class InvoiceServiceImpl implements InvoiceService{
      * @param invoiceDTO = invoice body with data
      * @return new created invoice with id, converted to DTO
      */
-
     @Override
     public InvoiceDTO addInvoice(InvoiceDTO invoiceDTO) {
-        invoiceDTO.setSeller(personService.findSeller(invoiceDTO.getSeller().getId()));
-        invoiceDTO.setBuyer(personService.findBuyer(invoiceDTO.getBuyer().getId()));
+        invoiceDTO.setSeller(personService.getPerson(invoiceDTO.getSeller().getId()));
+        invoiceDTO.setBuyer(personService.getPerson(invoiceDTO.getBuyer().getId()));
         InvoiceEntity invoiceEntity = invoiceMapper.toEntity(invoiceDTO);
         invoiceRepository.save(invoiceEntity);
         return invoiceMapper.toDTO(invoiceEntity);
@@ -50,7 +49,6 @@ public class InvoiceServiceImpl implements InvoiceService{
      * Remove invoice from database if exists
      * @param id = find invoice by id
      */
-
     @Override
     public void removeInvoice(Long id) {
         if(invoiceRepository.existsById(id))
@@ -62,7 +60,6 @@ public class InvoiceServiceImpl implements InvoiceService{
      * @param invoiceFilter = optional filter parameters
      * @return list of invoices after applying filters
      */
-
     @Override
     public List<InvoiceDTO> getAll(InvoiceFilter invoiceFilter) {
         InvoiceSpecification specification = new InvoiceSpecification(invoiceFilter);
@@ -81,7 +78,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 
     @Override
     public InvoiceDTO getInvoice(Long id) {
-        return invoiceMapper.toDTO(invoiceRepository
+        return invoiceMapper.toDTO(
+                invoiceRepository
                 .findById(id)
                 .orElseThrow());
     }
@@ -105,14 +103,12 @@ public class InvoiceServiceImpl implements InvoiceService{
         invoiceMapper.updateInvoiceEntity(invoiceDTO,invoiceEntity);
 
         // Set seller to invoice entity
-        invoiceEntity.setSeller(personMapper
-                .toEntity(personService
-                        .findSeller(invoiceDTO.getSeller().getId())));
+        invoiceEntity.setSeller(personMapper.toEntity(personService.getPerson(invoiceDTO.getSeller().getId())));
 
         // Set buyer to invoice entity
         invoiceEntity.setBuyer(personMapper
                 .toEntity(personService
-                        .findBuyer(invoiceDTO.getBuyer().getId())));
+                        .getPerson(invoiceDTO.getBuyer().getId())));
 
         // Save updated entity to databse
         invoiceRepository.saveAndFlush(invoiceEntity);
@@ -147,6 +143,4 @@ public class InvoiceServiceImpl implements InvoiceService{
                 .map(invoiceEntity -> invoiceMapper.toDTO(invoiceEntity))
                 .toList();
     }
-
-
 }

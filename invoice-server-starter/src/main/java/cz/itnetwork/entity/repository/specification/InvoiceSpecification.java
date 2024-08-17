@@ -1,5 +1,5 @@
 package cz.itnetwork.entity.repository.specification;
-
+//region imports
 import cz.itnetwork.entity.InvoiceEntity;
 import cz.itnetwork.entity.InvoiceEntity_;
 import cz.itnetwork.entity.PersonEntity;
@@ -11,9 +11,11 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
+//endregion
 
 @RequiredArgsConstructor
 public class InvoiceSpecification implements Specification<InvoiceEntity> {
+
     private final InvoiceFilter filter;
     @Override
     public Specification<InvoiceEntity> and(Specification<InvoiceEntity> other) {
@@ -37,7 +39,7 @@ public class InvoiceSpecification implements Specification<InvoiceEntity> {
             predicateList.add(criteriaBuilder.equal(sellerJoin.get(PersonEntity_.ID), filter.getSellerId()));
         }
         if (filter.getProduct() != null) {
-            predicateList.add(criteriaBuilder.equal(root.get(InvoiceEntity_.PRODUCT), filter.getProduct()));
+            predicateList.add(criteriaBuilder.like(root.get(InvoiceEntity_.PRODUCT), "%"+filter.getProduct()+"%"));
         }
         if (filter.getMinPrice() != null) {
             predicateList.add(criteriaBuilder.greaterThanOrEqualTo(root.get(InvoiceEntity_.PRICE), filter.getMinPrice()));

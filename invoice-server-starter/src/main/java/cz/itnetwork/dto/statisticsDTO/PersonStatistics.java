@@ -1,9 +1,11 @@
-package cz.itnetwork.service.statistics;
+package cz.itnetwork.dto.statisticsDTO;
 
+//region imports
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+//endregion
 
 @Data
 @NoArgsConstructor
