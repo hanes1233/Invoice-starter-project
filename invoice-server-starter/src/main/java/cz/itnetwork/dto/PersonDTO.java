@@ -4,11 +4,13 @@ package cz.itnetwork.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cz.itnetwork.constant.Countries;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 //endregion
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonDTO {

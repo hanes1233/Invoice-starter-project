@@ -18,26 +18,26 @@ public class PersonMapperImpl implements PersonMapper {
             return null;
         }
 
-        PersonEntity personEntity = new PersonEntity();
+        PersonEntity.PersonEntityBuilder personEntity = PersonEntity.builder();
 
         if ( source.getId() != null ) {
-            personEntity.setId( source.getId() );
+            personEntity.id( source.getId() );
         }
-        personEntity.setName( source.getName() );
-        personEntity.setIdentificationNumber( source.getIdentificationNumber() );
-        personEntity.setTaxNumber( source.getTaxNumber() );
-        personEntity.setAccountNumber( source.getAccountNumber() );
-        personEntity.setBankCode( source.getBankCode() );
-        personEntity.setIban( source.getIban() );
-        personEntity.setTelephone( source.getTelephone() );
-        personEntity.setMail( source.getMail() );
-        personEntity.setStreet( source.getStreet() );
-        personEntity.setZip( source.getZip() );
-        personEntity.setCity( source.getCity() );
-        personEntity.setCountry( source.getCountry() );
-        personEntity.setNote( source.getNote() );
+        personEntity.name( source.getName() );
+        personEntity.identificationNumber( source.getIdentificationNumber() );
+        personEntity.taxNumber( source.getTaxNumber() );
+        personEntity.accountNumber( source.getAccountNumber() );
+        personEntity.bankCode( source.getBankCode() );
+        personEntity.iban( source.getIban() );
+        personEntity.telephone( source.getTelephone() );
+        personEntity.mail( source.getMail() );
+        personEntity.street( source.getStreet() );
+        personEntity.zip( source.getZip() );
+        personEntity.city( source.getCity() );
+        personEntity.country( source.getCountry() );
+        personEntity.note( source.getNote() );
 
-        return personEntity;
+        return personEntity.build();
     }
 
     @Override
@@ -46,23 +46,23 @@ public class PersonMapperImpl implements PersonMapper {
             return null;
         }
 
-        PersonDTO personDTO = new PersonDTO();
+        PersonDTO.PersonDTOBuilder personDTO = PersonDTO.builder();
 
-        personDTO.setId( source.getId() );
-        personDTO.setName( source.getName() );
-        personDTO.setIdentificationNumber( source.getIdentificationNumber() );
-        personDTO.setTaxNumber( source.getTaxNumber() );
-        personDTO.setAccountNumber( source.getAccountNumber() );
-        personDTO.setBankCode( source.getBankCode() );
-        personDTO.setIban( source.getIban() );
-        personDTO.setTelephone( source.getTelephone() );
-        personDTO.setMail( source.getMail() );
-        personDTO.setStreet( source.getStreet() );
-        personDTO.setZip( source.getZip() );
-        personDTO.setCity( source.getCity() );
-        personDTO.setCountry( source.getCountry() );
-        personDTO.setNote( source.getNote() );
+        personDTO.id( source.getId() );
+        personDTO.name( source.getName() );
+        personDTO.identificationNumber( source.getIdentificationNumber() );
+        personDTO.taxNumber( source.getTaxNumber() );
+        personDTO.accountNumber( source.getAccountNumber() );
+        personDTO.bankCode( source.getBankCode() );
+        personDTO.iban( source.getIban() );
+        personDTO.telephone( source.getTelephone() );
+        personDTO.mail( source.getMail() );
+        personDTO.street( source.getStreet() );
+        personDTO.zip( source.getZip() );
+        personDTO.city( source.getCity() );
+        personDTO.country( source.getCountry() );
+        personDTO.note( source.getNote() );
 
-        return personDTO;
+        return personDTO.build();
     }
 }

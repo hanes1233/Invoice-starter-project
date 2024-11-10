@@ -2,6 +2,7 @@ package cz.itnetwork.entity;
 //region imports
 import cz.itnetwork.constant.Countries;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import java.util.List;
 //endregion
 
 @Entity(name = "person")
+@Builder
 @Getter
 @Setter
 public class PersonEntity {

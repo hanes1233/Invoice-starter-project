@@ -1,5 +1,6 @@
 package cz.itnetwork.service;
 //region imports
+
 import cz.itnetwork.dto.InvoiceDTO;
 import cz.itnetwork.dto.PersonDTO;
 import cz.itnetwork.dto.mapper.InvoiceMapper;
@@ -53,7 +54,6 @@ public class PersonServiceImpl implements PersonService {
         try {
             PersonEntity person = fetchPersonById(personId);
             person.setHidden(true);
-
             personRepository.save(person);
         } catch (NotFoundException ignored) {
             // The contract in the interface states, that no exception is thrown, if the entity is not found.
@@ -86,9 +86,10 @@ public class PersonServiceImpl implements PersonService {
     public List<InvoiceDTO> getPurchases(String identificationNumber) {
         return personRepository.findByIdentificationNumber(identificationNumber)
                 .stream()
-                .flatMap(list -> list.getPurchases().stream())
-                .map(i -> invoiceMapper.toDTO(i))
-                .collect(Collectors.toList());
+                .flatMap(list -> list.getPurchases()
+                        .stream())
+                        .map(i -> invoiceMapper.toDTO(i))
+                        .collect(Collectors.toList());
     }
 
     /**
@@ -147,6 +148,6 @@ public class PersonServiceImpl implements PersonService {
                                 id,
                                 personRepository.findById(id).get().getName(),
                                 invoiceRepository.findRevenueById(id)))
-                .toList();
+                        .toList();
     }
 }

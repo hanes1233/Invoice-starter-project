@@ -51,8 +51,7 @@ public class InvoiceServiceImpl implements InvoiceService{
      */
     @Override
     public void removeInvoice(Long id) {
-        if(invoiceRepository.existsById(id))
-            invoiceRepository.deleteById(id);
+        invoiceRepository.deleteById(id);
     }
 
     /**
@@ -106,11 +105,9 @@ public class InvoiceServiceImpl implements InvoiceService{
         invoiceEntity.setSeller(personMapper.toEntity(personService.getPerson(invoiceDTO.getSeller().getId())));
 
         // Set buyer to invoice entity
-        invoiceEntity.setBuyer(personMapper
-                .toEntity(personService
-                        .getPerson(invoiceDTO.getBuyer().getId())));
+        invoiceEntity.setBuyer(personMapper.toEntity(personService.getPerson(invoiceDTO.getBuyer().getId())));
 
-        // Save updated entity to databse
+        // Save updated entity to database
         invoiceRepository.saveAndFlush(invoiceEntity);
 
         return invoiceMapper.toDTO(invoiceEntity);

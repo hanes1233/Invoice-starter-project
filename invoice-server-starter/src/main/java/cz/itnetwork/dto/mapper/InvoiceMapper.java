@@ -14,7 +14,6 @@ public interface InvoiceMapper {
     InvoiceEntity toEntity(InvoiceDTO source);
 
     @Mapping(target = "seller", ignore = true)
-
     @Mapping(target = "buyer", ignore = true)
     InvoiceEntity updateInvoiceEntity(InvoiceDTO source, @MappingTarget InvoiceEntity target);
 

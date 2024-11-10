@@ -17,10 +17,10 @@ public interface InvoiceRepository extends JpaRepository<InvoiceEntity,Long>, Jp
     int getAllTimeSum();
 
     @Query(value = "SELECT COUNT(id) FROM invoice", nativeQuery = true)
-    int getInvoicesCount();
+    Integer getInvoicesCount();
 
     @Query(value = "SELECT SUM(price) FROM invoice WHERE issued >= :date", nativeQuery = true)
-    int getCurrentYearSum(@Param("date") Date currentYear);
+    Integer getCurrentYearSum(@Param("date") Date currentYear);
 
     @Query(value = "SELECT DISTINCT seller_id FROM invoice", nativeQuery = true)
     List<Long> findSellerIds();

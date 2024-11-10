@@ -20,20 +20,20 @@ public class InvoiceMapperImpl implements InvoiceMapper {
             return null;
         }
 
-        InvoiceDTO invoiceDTO = new InvoiceDTO();
+        InvoiceDTO.InvoiceDTOBuilder invoiceDTO = InvoiceDTO.builder();
 
-        invoiceDTO.setId( source.getId() );
-        invoiceDTO.setInvoiceNumber( source.getInvoiceNumber() );
-        invoiceDTO.setSeller( personEntityToPersonDTO( source.getSeller() ) );
-        invoiceDTO.setBuyer( personEntityToPersonDTO( source.getBuyer() ) );
-        invoiceDTO.setIssued( source.getIssued() );
-        invoiceDTO.setDueDate( source.getDueDate() );
-        invoiceDTO.setProduct( source.getProduct() );
-        invoiceDTO.setPrice( source.getPrice() );
-        invoiceDTO.setVat( source.getVat() );
-        invoiceDTO.setNote( source.getNote() );
+        invoiceDTO.id( source.getId() );
+        invoiceDTO.invoiceNumber( source.getInvoiceNumber() );
+        invoiceDTO.seller( personEntityToPersonDTO( source.getSeller() ) );
+        invoiceDTO.buyer( personEntityToPersonDTO( source.getBuyer() ) );
+        invoiceDTO.issued( source.getIssued() );
+        invoiceDTO.dueDate( source.getDueDate() );
+        invoiceDTO.product( source.getProduct() );
+        invoiceDTO.price( source.getPrice() );
+        invoiceDTO.vat( source.getVat() );
+        invoiceDTO.note( source.getNote() );
 
-        return invoiceDTO;
+        return invoiceDTO.build();
     }
 
     @Override
@@ -42,20 +42,20 @@ public class InvoiceMapperImpl implements InvoiceMapper {
             return null;
         }
 
-        InvoiceEntity invoiceEntity = new InvoiceEntity();
+        InvoiceEntity.InvoiceEntityBuilder invoiceEntity = InvoiceEntity.builder();
 
-        invoiceEntity.setId( source.getId() );
-        invoiceEntity.setInvoiceNumber( source.getInvoiceNumber() );
-        invoiceEntity.setIssued( source.getIssued() );
-        invoiceEntity.setDueDate( source.getDueDate() );
-        invoiceEntity.setProduct( source.getProduct() );
-        invoiceEntity.setPrice( source.getPrice() );
-        invoiceEntity.setVat( source.getVat() );
-        invoiceEntity.setNote( source.getNote() );
-        invoiceEntity.setBuyer( personDTOToPersonEntity( source.getBuyer() ) );
-        invoiceEntity.setSeller( personDTOToPersonEntity( source.getSeller() ) );
+        invoiceEntity.id( source.getId() );
+        invoiceEntity.invoiceNumber( source.getInvoiceNumber() );
+        invoiceEntity.issued( source.getIssued() );
+        invoiceEntity.dueDate( source.getDueDate() );
+        invoiceEntity.product( source.getProduct() );
+        invoiceEntity.price( source.getPrice() );
+        invoiceEntity.vat( source.getVat() );
+        invoiceEntity.note( source.getNote() );
+        invoiceEntity.buyer( personDTOToPersonEntity( source.getBuyer() ) );
+        invoiceEntity.seller( personDTOToPersonEntity( source.getSeller() ) );
 
-        return invoiceEntity;
+        return invoiceEntity.build();
     }
 
     @Override
@@ -81,24 +81,24 @@ public class InvoiceMapperImpl implements InvoiceMapper {
             return null;
         }
 
-        PersonDTO personDTO = new PersonDTO();
+        PersonDTO.PersonDTOBuilder personDTO = PersonDTO.builder();
 
-        personDTO.setId( personEntity.getId() );
-        personDTO.setName( personEntity.getName() );
-        personDTO.setIdentificationNumber( personEntity.getIdentificationNumber() );
-        personDTO.setTaxNumber( personEntity.getTaxNumber() );
-        personDTO.setAccountNumber( personEntity.getAccountNumber() );
-        personDTO.setBankCode( personEntity.getBankCode() );
-        personDTO.setIban( personEntity.getIban() );
-        personDTO.setTelephone( personEntity.getTelephone() );
-        personDTO.setMail( personEntity.getMail() );
-        personDTO.setStreet( personEntity.getStreet() );
-        personDTO.setZip( personEntity.getZip() );
-        personDTO.setCity( personEntity.getCity() );
-        personDTO.setCountry( personEntity.getCountry() );
-        personDTO.setNote( personEntity.getNote() );
+        personDTO.id( personEntity.getId() );
+        personDTO.name( personEntity.getName() );
+        personDTO.identificationNumber( personEntity.getIdentificationNumber() );
+        personDTO.taxNumber( personEntity.getTaxNumber() );
+        personDTO.accountNumber( personEntity.getAccountNumber() );
+        personDTO.bankCode( personEntity.getBankCode() );
+        personDTO.iban( personEntity.getIban() );
+        personDTO.telephone( personEntity.getTelephone() );
+        personDTO.mail( personEntity.getMail() );
+        personDTO.street( personEntity.getStreet() );
+        personDTO.zip( personEntity.getZip() );
+        personDTO.city( personEntity.getCity() );
+        personDTO.country( personEntity.getCountry() );
+        personDTO.note( personEntity.getNote() );
 
-        return personDTO;
+        return personDTO.build();
     }
 
     protected PersonEntity personDTOToPersonEntity(PersonDTO personDTO) {
@@ -106,25 +106,25 @@ public class InvoiceMapperImpl implements InvoiceMapper {
             return null;
         }
 
-        PersonEntity personEntity = new PersonEntity();
+        PersonEntity.PersonEntityBuilder personEntity = PersonEntity.builder();
 
         if ( personDTO.getId() != null ) {
-            personEntity.setId( personDTO.getId() );
+            personEntity.id( personDTO.getId() );
         }
-        personEntity.setName( personDTO.getName() );
-        personEntity.setIdentificationNumber( personDTO.getIdentificationNumber() );
-        personEntity.setTaxNumber( personDTO.getTaxNumber() );
-        personEntity.setAccountNumber( personDTO.getAccountNumber() );
-        personEntity.setBankCode( personDTO.getBankCode() );
-        personEntity.setIban( personDTO.getIban() );
-        personEntity.setTelephone( personDTO.getTelephone() );
-        personEntity.setMail( personDTO.getMail() );
-        personEntity.setStreet( personDTO.getStreet() );
-        personEntity.setZip( personDTO.getZip() );
-        personEntity.setCity( personDTO.getCity() );
-        personEntity.setCountry( personDTO.getCountry() );
-        personEntity.setNote( personDTO.getNote() );
+        personEntity.name( personDTO.getName() );
+        personEntity.identificationNumber( personDTO.getIdentificationNumber() );
+        personEntity.taxNumber( personDTO.getTaxNumber() );
+        personEntity.accountNumber( personDTO.getAccountNumber() );
+        personEntity.bankCode( personDTO.getBankCode() );
+        personEntity.iban( personDTO.getIban() );
+        personEntity.telephone( personDTO.getTelephone() );
+        personEntity.mail( personDTO.getMail() );
+        personEntity.street( personDTO.getStreet() );
+        personEntity.zip( personDTO.getZip() );
+        personEntity.city( personDTO.getCity() );
+        personEntity.country( personDTO.getCountry() );
+        personEntity.note( personDTO.getNote() );
 
-        return personEntity;
+        return personEntity.build();
     }
 }
