@@ -1,3 +1,9 @@
+![screenshots](https://github.com/hanes1233/Invoice-starter-project/blob/main/screenshots/invoices_table.png)
+#
+![screenshots](https://github.com/hanes1233/Invoice-starter-project/blob/main/screenshots/create_invoice.png)
+#
+![screenshots](https://github.com/hanes1233/Invoice-starter-project/blob/main/screenshots/person_detail.png)
+
 # Invoice starter project 
 
 ## Description 
