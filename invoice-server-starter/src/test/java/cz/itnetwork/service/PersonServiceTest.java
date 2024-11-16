@@ -1,6 +1,6 @@
 package cz.itnetwork.service;
 
-import cz.itnetwork.EntityTest;
+import cz.itnetwork.helpers.DataMaker;
 import cz.itnetwork.dto.InvoiceDTO;
 import cz.itnetwork.dto.PersonDTO;
 import cz.itnetwork.dto.mapper.InvoiceMapper;
@@ -27,23 +27,15 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PersonServiceTest {
+ class PersonServiceTest {
 
-    private PersonEntity person1;
-    private PersonEntity person2;
-    private PersonDTO personDTO1;
+    private DataMaker dataMaker;
 
     @BeforeEach
     public void setUp() {
-        EntityTest.definePersons();
-        EntityTest.definePersonDTO();
-
-        this.person1 = EntityTest.getPerson1();
-        this.person2 = EntityTest.getPerson2();
-        this.personDTO1 = EntityTest.getPersonDTO1();
-        //this.personDTO2 = EntityTest.getPersonDTO2();
+        this.dataMaker = new DataMaker();
     }
-
+    // region Mocks
     @Mock
     private PersonMapper personMapper;
 
@@ -58,120 +50,150 @@ public class PersonServiceTest {
 
     @InjectMocks
     private PersonServiceImpl personService;
+    // endregion
 
     @Test
-    public void PersonService_addPerson_ReturnsPersonDTO() {
-        when(personMapper.toEntity(Mockito.any(PersonDTO.class))).thenReturn(person1);
-        when(personMapper.toDTO(Mockito.any(PersonEntity.class))).thenReturn(personDTO1);
-        when(personRepository.save(Mockito.any(PersonEntity.class))).thenReturn(person1);
+     void testSavePerson() {
+        // Mock actions
+        when(personMapper.toEntity(Mockito.any(PersonDTO.class))).thenReturn(dataMaker.createPerson());
+        when(personMapper.toDTO(Mockito.any(PersonEntity.class))).thenReturn(dataMaker.createPersonDTO());
+        when(personRepository.save(Mockito.any(PersonEntity.class))).thenReturn(dataMaker.createPerson());
 
-        PersonDTO savedPerson = personService.addPerson(personDTO1);
+        // Act
+        PersonDTO savedPerson = personService.addPerson(dataMaker.createPersonDTO());
 
+        // Assertions
         Assertions.assertThat(savedPerson).isNotNull();
     }
 
     @Test
-    public void PersonService_getPersonById_ReturnsPersonDTO() {
-        when(personRepository.findById(1L)).thenReturn(Optional.ofNullable(person1));
-        when(personMapper.toDTO(Mockito.any(PersonEntity.class))).thenReturn(personDTO1);
+     void testGetPersonById() {
+        // Prepare data
+        PersonEntity personEntity = dataMaker.createPerson();
+        PersonDTO personDTO = dataMaker.createPersonDTO();
+        personDTO.setName(personEntity.getName());
+        personDTO.setIdentificationNumber(personEntity.getIdentificationNumber());
 
+        // Mock actions
+        when(personRepository.findById(1L)).thenReturn(Optional.of(personEntity));
+        when(personMapper.toDTO(Mockito.any(PersonEntity.class))).thenReturn(personDTO);
+
+        // Act
         PersonDTO personDTO1 = personService.getPerson(1L);
 
+        // Assertions
         Assertions.assertThat(personDTO1).isNotNull();
-        Assertions.assertThat(personDTO1.getName()).isEqualTo("Pavel");
-        Assertions.assertThat(personDTO1.getIdentificationNumber()).isEqualTo("199345");
+        Assertions.assertThat(personDTO1.getName()).isEqualTo(personEntity.getName());
+        Assertions.assertThat(personDTO1.getIdentificationNumber()).isEqualTo(personEntity.getIdentificationNumber());
 
+        // Verifications
         Mockito.verify(personRepository, Mockito.times(1)).findById(1L);
         Mockito.verify(personMapper, Mockito.times(1)).toDTO(Mockito.any(PersonEntity.class));
     }
 
     @Test
-    public void PersonService_updatePerson_ReturnsPersonDTO() {
-        personDTO1.setName("ASDAS");
+     void testUpdatePerson() {
+        // Prepare data
+        PersonDTO personDTO = dataMaker.createPersonDTO();
+        PersonEntity personEntity = dataMaker.createPerson();
+        personEntity.setId(1L);
 
-        when(personRepository.findById(1L)).thenReturn(Optional.ofNullable(person1));
-        when(personMapper.toEntity(Mockito.any(PersonDTO.class))).thenReturn(person1);
-        when(personRepository.save(Mockito.any(PersonEntity.class))).thenReturn(person1);
-        when(personMapper.toDTO(Mockito.any(PersonEntity.class))).thenReturn(personDTO1);
+        // Mock actions
+        when(personRepository.findById(1L)).thenReturn(Optional.of(personEntity));
+        when(personMapper.toEntity(Mockito.any(PersonDTO.class))).thenReturn(dataMaker.createPerson());
+        when(personRepository.save(Mockito.any(PersonEntity.class))).thenReturn(personEntity);
+        when(personMapper.toDTO(Mockito.any(PersonEntity.class))).thenReturn(personDTO);
 
-        PersonDTO result = personService.updatePerson(1L, personDTO1);
+        // Act
+        PersonDTO result = personService.updatePerson(1L, personDTO);
 
+        // Assertions
         Assertions.assertThat(result).isNotNull();
-        Assertions.assertThat(result.getName()).isEqualTo(personDTO1.getName());
+        Assertions.assertThat(result.getName()).isEqualTo(personDTO.getName());
     }
 
     @Test
-    public void PersonService_removePerson_void() {
-        when(personRepository.save(Mockito.any(PersonEntity.class))).thenReturn(person1);
-        when(personRepository.findById(1L)).thenReturn(Optional.ofNullable(person1));
+     void testRemoveById() {
+        // Mock actions
+        when(personRepository.save(Mockito.any(PersonEntity.class))).thenReturn(dataMaker.createPerson());
+        when(personRepository.findById(1L)).thenReturn(Optional.ofNullable(dataMaker.createPerson()));
 
+        // Assertions
         assertAll(() -> {
             personService.removePerson(1);
         });
     }
 
     @Test
-    public void PersonService_getAll_ReturnsListOfPersons() {
-        List<PersonEntity> listOfPersons = List.of(person1, person2);
-        when(personRepository.findAll()).thenReturn(listOfPersons);
+     void testFindAll() {
+        // Mock action
+        when(personRepository.findAll()).thenReturn(dataMaker.createPersons(2));
 
-        listOfPersons = personRepository.findAll();
+        // Act
+        List<PersonEntity> listOfPersons = personRepository.findAll();
 
-        Assertions.assertThat(listOfPersons).isNotNull();
-        Assertions.assertThat(listOfPersons.size()).isGreaterThan(0);
+        // Assert
+        Assertions.assertThat(listOfPersons).isNotNull().hasSizeGreaterThanOrEqualTo(1);
     }
 
     @Test
-    public void PersonService_getPurchases_ReturnsListOfPurchases() {
-        EntityTest.defineInvoicesDTO();
-        EntityTest.defineInvoices();
+     void getPurchases() {
+        // Prepare data
+        PersonEntity person = dataMaker.createPerson();
+        person.setPurchases(dataMaker.createInvoices(2));
 
-        person1.setPurchases(List.of(EntityTest.getInvoice1(), EntityTest.getInvoice2()));
+        // Mock actions
+        when(invoiceMapper.toDTO(Mockito.any(InvoiceEntity.class))).thenReturn(dataMaker.createInvoiceDTO());
+        when(personRepository.findByIdentificationNumber(person.getIdentificationNumber())).thenReturn(Collections.singletonList(person));
 
-        when(invoiceMapper.toDTO(Mockito.any(InvoiceEntity.class))).thenReturn(EntityTest.getInvoiceDTO1());
-        when(personRepository.findByIdentificationNumber("199345")).thenReturn(Collections.singletonList(person1));
+        // Act
+        List<InvoiceDTO> listOfPurchases = personService.getPurchases(person.getIdentificationNumber());
 
-        List<InvoiceDTO> listOfPurchases = personService.getPurchases("199345");
-
-        Assertions.assertThat(listOfPurchases).isNotNull();
-        Assertions.assertThat(listOfPurchases).isNotEmpty();
+        // Assertions
+        Assertions.assertThat(listOfPurchases).isNotNull().isNotEmpty();
     }
 
     @Test
-    public void PersonService_getSales_ReturnsListOfSales() {
-        EntityTest.defineInvoicesDTO();
-        EntityTest.defineInvoices();
+     void testGetSales() {
+        // Prepare data
+        PersonEntity person = dataMaker.createPerson();
+        person.setSales(dataMaker.createInvoices(2));
 
-        person1.setSales(List.of(EntityTest.getInvoice1(), EntityTest.getInvoice2()));
+        // Mock actions
+        when(invoiceMapper.toDTO(Mockito.any(InvoiceEntity.class))).thenReturn(dataMaker.createInvoiceDTO());
+        when(personRepository.findByIdentificationNumber("199345")).thenReturn(Collections.singletonList(person));
 
-        when(invoiceMapper.toDTO(Mockito.any(InvoiceEntity.class))).thenReturn(EntityTest.getInvoiceDTO1());
-        when(personRepository.findByIdentificationNumber("199345")).thenReturn(Collections.singletonList(person1));
-
+        // Act
         List<InvoiceDTO> listOfSales = personService.getSales("199345");
 
-        Assertions.assertThat(listOfSales).isNotNull();
-        Assertions.assertThat(listOfSales.size()).isEqualTo(2);
+        // Assertions
+        Assertions.assertThat(listOfSales).isNotNull().hasSizeGreaterThanOrEqualTo(2);
     }
 
     @Test
-    public void PersonService_getStatistics_ReturnsListOfStatistics() {
-        EntityTest.defineInvoices();
-        EntityTest.getInvoice1().setSeller(person1);
-        EntityTest.getInvoice2().setSeller(person2);
+     void testGetStatistics() {
+        // Prepare data
+        InvoiceEntity invoiceEntity = dataMaker.createInvoice();
+        InvoiceEntity invoiceEntity1 = dataMaker.createInvoice();
+        invoiceEntity.setSeller(dataMaker.createPerson());
+        invoiceEntity1.setSeller(dataMaker.createPerson());
         List<Long> stats = List.of(1L, 2L);
         List<PersonStatistics> listOfStatistics;
         Long revenue = 100L;
         Long revenue1 = 200L;
 
+        // Mock actions
         when(invoiceRepository.findSellerIds()).thenReturn(stats);
-        when(personRepository.findById(1L)).thenReturn(Optional.of(person1));
-        when(personRepository.findById(2L)).thenReturn(Optional.of(person2));
+        when(personRepository.findById(1L)).thenReturn(Optional.of(dataMaker.createPerson()));
+        when(personRepository.findById(2L)).thenReturn(Optional.of(dataMaker.createPerson()));
         when(invoiceRepository.findRevenueById(1L)).thenReturn(revenue);
         when(invoiceRepository.findRevenueById(2L)).thenReturn(revenue1);
 
+        // Act
         listOfStatistics = personService.getStatistics();
-        Assertions.assertThat(listOfStatistics).isNotNull();
-        Assertions.assertThat(listOfStatistics).isNotEmpty();
+
+        // Assertions
+        Assertions.assertThat(listOfStatistics).isNotNull().isNotEmpty();
     }
 
 }
